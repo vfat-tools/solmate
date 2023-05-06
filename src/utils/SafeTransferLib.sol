@@ -9,6 +9,15 @@ import {ERC20} from "../tokens/ERC20.sol";
 /// @dev Note that none of the functions in this library check that a token has code at all! That responsibility is delegated to the caller.
 library SafeTransferLib {
     /*//////////////////////////////////////////////////////////////
+                                ERRORS
+    //////////////////////////////////////////////////////////////*/
+
+    error ETHTransferFailed();
+    error TransferFromFailed();
+    error TransferFailed();
+    error ApproveFailed();
+
+    /*//////////////////////////////////////////////////////////////
                              ETH OPERATIONS
     //////////////////////////////////////////////////////////////*/
 
@@ -21,7 +30,7 @@ library SafeTransferLib {
             success := call(gas(), to, amount, 0, 0, 0, 0)
         }
 
-        require(success, "ETH_TRANSFER_FAILED");
+        if (!success) revert ETHTransferFailed();
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -59,7 +68,7 @@ library SafeTransferLib {
             )
         }
 
-        require(success, "TRANSFER_FROM_FAILED");
+        if (!success) revert TransferFromFailed();
     }
 
     function safeTransfer(
@@ -91,7 +100,7 @@ library SafeTransferLib {
             )
         }
 
-        require(success, "TRANSFER_FAILED");
+        if (!success) revert TransferFailed();
     }
 
     function safeApprove(
@@ -123,6 +132,6 @@ library SafeTransferLib {
             )
         }
 
-        require(success, "APPROVE_FAILED");
+        if (!success) revert ApproveFailed();
     }
 }
