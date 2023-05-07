@@ -52,7 +52,7 @@ contract SafeTransferLibTest is DSTestPlus {
     }
 
     function testTransferWithNonContract() public {
-        SafeTransferLib.safeTransfer(ERC20(address(0xBADBEEF)), address(0xBEEF), 1e18);
+        SafeTransferLib.safeTransfer(address(0xBADBEEF), address(0xBEEF), 1e18);
     }
 
     function testTransferFromWithMissingReturn() public {
@@ -68,7 +68,7 @@ contract SafeTransferLibTest is DSTestPlus {
     }
 
     function testTransferFromWithNonContract() public {
-        SafeTransferLib.safeTransferFrom(ERC20(address(0xBADBEEF)), address(0xFEED), address(0xBEEF), 1e18);
+        SafeTransferLib.safeTransferFrom(address(0xBADBEEF), address(0xFEED), address(0xBEEF), 1e18);
     }
 
     function testApproveWithMissingReturn() public {
@@ -84,7 +84,7 @@ contract SafeTransferLibTest is DSTestPlus {
     }
 
     function testApproveWithNonContract() public {
-        SafeTransferLib.safeApprove(ERC20(address(0xBADBEEF)), address(0xBEEF), 1e18);
+        SafeTransferLib.safeApprove(address(0xBADBEEF), address(0xBEEF), 1e18);
     }
 
     function testTransferETH() public {
@@ -206,7 +206,7 @@ contract SafeTransferLibTest is DSTestPlus {
     ) public brutalizeMemory(brutalizeWith) {
         if (uint256(uint160(nonContract)) <= 18 || nonContract.code.length > 0) return;
 
-        SafeTransferLib.safeTransfer(ERC20(nonContract), to, amount);
+        SafeTransferLib.safeTransfer(nonContract, to, amount);
     }
 
     function testFailTransferETHToContractWithoutFallback() public {
@@ -297,7 +297,7 @@ contract SafeTransferLibTest is DSTestPlus {
     ) public brutalizeMemory(brutalizeWith) {
         if (uint256(uint160(nonContract)) <= 18 || nonContract.code.length > 0) return;
 
-        SafeTransferLib.safeTransferFrom(ERC20(nonContract), from, to, amount);
+        SafeTransferLib.safeTransferFrom(nonContract, from, to, amount);
     }
 
     function testApproveWithMissingReturn(
@@ -379,7 +379,7 @@ contract SafeTransferLibTest is DSTestPlus {
     ) public brutalizeMemory(brutalizeWith) {
         if (uint256(uint160(nonContract)) <= 18 || nonContract.code.length > 0) return;
 
-        SafeTransferLib.safeApprove(ERC20(nonContract), to, amount);
+        SafeTransferLib.safeApprove(nonContract, to, amount);
     }
 
     function testTransferETH(
@@ -548,7 +548,7 @@ contract SafeTransferLibTest is DSTestPlus {
         uint256 amount
     ) internal {
         uint256 preBal = ERC20(token).balanceOf(to);
-        SafeTransferLib.safeTransfer(ERC20(address(token)), to, amount);
+        SafeTransferLib.safeTransfer(address(token), to, amount);
         uint256 postBal = ERC20(token).balanceOf(to);
 
         if (to == address(this)) {
@@ -571,7 +571,7 @@ contract SafeTransferLibTest is DSTestPlus {
         MissingReturnToken(token).transfer(from, amount);
 
         uint256 preBal = ERC20(token).balanceOf(to);
-        SafeTransferLib.safeTransferFrom(ERC20(token), from, to, amount);
+        SafeTransferLib.safeTransferFrom(token, from, to, amount);
         uint256 postBal = ERC20(token).balanceOf(to);
 
         if (from == to) {
@@ -586,7 +586,7 @@ contract SafeTransferLibTest is DSTestPlus {
         address to,
         uint256 amount
     ) internal {
-        SafeTransferLib.safeApprove(ERC20(address(token)), to, amount);
+        SafeTransferLib.safeApprove(address(token), to, amount);
 
         assertEq(ERC20(token).allowance(address(this), to), amount);
     }

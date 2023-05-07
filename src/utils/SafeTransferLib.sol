@@ -38,7 +38,7 @@ library SafeTransferLib {
     //////////////////////////////////////////////////////////////*/
 
     function safeTransferFrom(
-        ERC20 token,
+        address token,
         address from,
         address to,
         uint256 amount
@@ -72,7 +72,7 @@ library SafeTransferLib {
     }
 
     function safeTransfer(
-        ERC20 token,
+        address token,
         address to,
         uint256 amount
     ) internal {
@@ -104,7 +104,7 @@ library SafeTransferLib {
     }
 
     function safeApprove(
-        ERC20 token,
+        address token,
         address to,
         uint256 amount
     ) internal {

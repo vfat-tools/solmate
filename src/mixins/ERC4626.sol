@@ -8,7 +8,7 @@ import {FixedPointMathLib} from "../utils/FixedPointMathLib.sol";
 /// @notice Minimal ERC4626 tokenized Vault implementation.
 /// @author Solmate (https://github.com/transmissions11/solmate/blob/main/src/mixins/ERC4626.sol)
 abstract contract ERC4626 is ERC20 {
-    using SafeTransferLib for ERC20;
+    using SafeTransferLib for address;
     using FixedPointMathLib for uint256;
 
     /*//////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ abstract contract ERC4626 is ERC20 {
         require((shares = previewDeposit(assets)) != 0, "ZERO_SHARES");
 
         // Need to transfer before minting or ERC777s could reenter.
-        asset.safeTransferFrom(msg.sender, address(this), assets);
+        address(asset).safeTransferFrom(msg.sender, address(this), assets);
 
         _mint(receiver, shares);
 
@@ -61,7 +61,7 @@ abstract contract ERC4626 is ERC20 {
         assets = previewMint(shares); // No need to check for rounding error, previewMint rounds up.
 
         // Need to transfer before minting or ERC777s could reenter.
-        asset.safeTransferFrom(msg.sender, address(this), assets);
+        address(asset).safeTransferFrom(msg.sender, address(this), assets);
 
         _mint(receiver, shares);
 
@@ -89,7 +89,7 @@ abstract contract ERC4626 is ERC20 {
 
         emit Withdraw(msg.sender, receiver, owner, assets, shares);
 
-        asset.safeTransfer(receiver, assets);
+        address(asset).safeTransfer(receiver, assets);
     }
 
     function redeem(
@@ -112,7 +112,7 @@ abstract contract ERC4626 is ERC20 {
 
         emit Withdraw(msg.sender, receiver, owner, assets, shares);
 
-        asset.safeTransfer(receiver, assets);
+        address(asset).safeTransfer(receiver, assets);
     }
 
     /*//////////////////////////////////////////////////////////////
